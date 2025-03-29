@@ -56,7 +56,9 @@ const TableFour: React.FC<TableProps> = ({ selectedBodega }) => {
         selectedBodega.forEach((bodega) => query.append('bodega', bodega));
 
         const response = await fetch(
-          `http://localhost:8000/api/table-4?${query.toString()}&page=${currentPage}`,
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/table-4?${query.toString()}&page=${currentPage}`,
         );
 
         if (!response.ok) {

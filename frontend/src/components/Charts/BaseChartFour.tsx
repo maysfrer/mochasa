@@ -8,7 +8,7 @@ const BaseChartFour: React.FC = () => {
 
   useEffect(() => {
     let ignore = false;
-    fetch('http://localhost:8000/api/available-bodegas')
+    fetch(`${import.meta.env.VITE_API_URL}/api/available-bodegas`)
       .then((response) => response.json())
       .then((json) => {
         if (!ignore) {

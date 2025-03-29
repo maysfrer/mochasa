@@ -48,7 +48,9 @@ const TableTwo: React.FC<TableProps> = ({ selectedBodega }) => {
         query.append('sku', 'AFRECHO DE MALTA | 301');
 
         const response = await fetch(
-          `http://localhost:8000/api/table-2?${query.toString()}&page=${currentPage}`,
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/table-2?${query.toString()}&page=${currentPage}`,
         );
 
         if (!response.ok) {

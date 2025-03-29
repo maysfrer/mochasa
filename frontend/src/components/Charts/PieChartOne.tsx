@@ -83,7 +83,7 @@ const ChartPie: React.FC = () => {
 
   useEffect(() => {
     let ignore = false;
-    fetch('http://localhost:8000/api/available-bodegas')
+    fetch(`${import.meta.env.VITE_API_URL}/api/available-bodegas`)
       .then((response) => response.json())
       .then((json) => {
         if (!ignore) {
@@ -106,7 +106,7 @@ const ChartPie: React.FC = () => {
   useEffect(() => {
     const query = new URLSearchParams();
     selectedBodega.forEach((bodega) => query.append('bodega', bodega));
-    fetch(`http://localhost:8000/api/pie-chart-1?${query.toString()}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/pie-chart-1?${query.toString()}`)
       .then((response) => response.json())
       .then((json: PieChartResponse) => {
         setChartState(json.data);

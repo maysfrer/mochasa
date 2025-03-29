@@ -143,7 +143,11 @@ const LineChartThree: React.FC = () => {
     if (bodegas.length) {
       const query = new URLSearchParams();
       bodegas.forEach((bodega) => query.append('bodega', bodega));
-      fetch(`http://localhost:8000/api/available-skus?${query.toString()}`)
+      fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/available-skus?${query.toString()}`,
+      )
         .then((response) => response.json())
         .then((json) => {
           const skus = json.data;
@@ -157,7 +161,7 @@ const LineChartThree: React.FC = () => {
 
   useEffect(() => {
     let ignore = false;
-    fetch('http://localhost:8000/api/available-bodegas')
+    fetch(`${import.meta.env.VITE_API_URL}/api/available-bodegas`)
       .then((response) => response.json())
       .then((json) => {
         if (!ignore) {
@@ -190,7 +194,9 @@ const LineChartThree: React.FC = () => {
         selectedSku.forEach((sku) => query.append('sku', sku));
 
         const response = await fetch(
-          `http://localhost:8000/api/line-chart-3?${query.toString()}`,
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/line-chart-3?${query.toString()}`,
         );
         const data = await response.json();
         const series = data.data;
