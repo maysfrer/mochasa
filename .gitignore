@@ -1,0 +1,15 @@
+# System files
+.DS_Store
+
+# Personal folders
+__archive__/
+
+# Environment files
+.env
+
+# Logs
+logs
+*.log
+
+# Editor directories and files
+.vscode/
