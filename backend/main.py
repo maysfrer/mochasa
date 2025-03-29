@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, BackgroundTasks
 import logging
-from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from typing import List, Optional
@@ -24,20 +23,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-print("INFO:     Starting loading data.")
+data_loaded = False
+health_check = False # guards against multiple triggers
 
-df_mensual = cargar_datos_1()
-df_semanal = cargar_datos_2(field='week')
-df_analizado, df_ultimos_6, summary, conteo_modelo_bodega = cargar_datos_3(df_mensual)
-df_abc, df_conteos = cargar_datos_4(df_analizado)
-df_unido = cargar_datos_5(df_ultimos_6, df_abc, summary)
-df_periodico, df_EOQ, df_solicitar, conteo_politica_bodega = cargar_datos_6(df_unido)
+def ensure_data_loaded():
+    global data_loaded
+    if not data_loaded:
+        print("INFO:     Starting loading data.")
+        global df_mensual, df_semanal, df_analizado, df_ultimos_6, summary
+        global conteo_modelo_bodega, df_abc, df_conteos, df_unido
+        global df_periodico, df_EOQ, df_solicitar, conteo_politica_bodega
 
-print("INFO:     Finished loading data.")
+        df_mensual = cargar_datos_1()
+        df_semanal = cargar_datos_2(field='week')
+        df_analizado, df_ultimos_6, summary, conteo_modelo_bodega = cargar_datos_3(df_mensual)
+        df_abc, df_conteos = cargar_datos_4(df_analizado)
+        df_unido = cargar_datos_5(df_ultimos_6, df_abc, summary)
+        df_periodico, df_EOQ, df_solicitar, conteo_politica_bodega = cargar_datos_6(df_unido)
 
-@app.get("/status")
-def status():
-    return {"message": "Welcome to the API"}
+        data_loaded = True
+        print("INFO:     Finished loading data.")
+
+@app.get("/health")
+def health(background_tasks: BackgroundTasks):
+    global health_check  # required to modify health_check
+
+    if not data_loaded:
+        if not health_check:
+            background_tasks.add_task(ensure_data_loaded)
+            health_check = True
+        return {"status": "initializing"}
+    
+    return {"status": "ok"}
 
 @app.get("/api/line-chart-1")
 def get_line_chart_1(
