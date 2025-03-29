@@ -20,7 +20,7 @@ allowed_origins = [origin.strip() for origin in ALLOWED_ORIGINS.split(",") if or
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[allowed_origins], # Frontend origin
+    allow_origins=allowed_origins, # Frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
