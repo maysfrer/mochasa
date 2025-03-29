@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from typing import List, Optional
 from utils import cargar_datos_1, cargar_datos_2, cargar_datos_3, cargar_datos_4, cargar_datos_5, cargar_datos_6
-from constants import CURRENT_YEAR
+from constants import CURRENT_YEAR, ALLOWED_ORIGINS
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -14,10 +14,13 @@ logger = logging.getLogger('uvicorn.error')
 # Create an instance of FastAPi
 app = FastAPI()
 
+# Parsing the allowed origins from the environment variable
+allowed_origins = [origin.strip() for origin in ALLOWED_ORIGINS.split(",") if origin.strip()]
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:4173", "http://localhost:3000"], # Frontend origin
+    allow_origins=[allowed_origins], # Frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

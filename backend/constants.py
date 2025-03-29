@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 
 EXCEL_FILE_CONSUMPTIONS = "BASE-2.xlsx"
 
@@ -21,3 +22,5 @@ MONTHS = {
 }
 
 CURRENT_YEAR = datetime.now().year
+
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
