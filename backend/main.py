@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Query, BackgroundTasks
+from fastapi import FastAPI, Query
 import logging
+import threading
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 from typing import List, Optional
@@ -27,7 +28,6 @@ app.add_middleware(
 )
 
 data_loaded = False
-health_check = False # guards against multiple triggers
 
 def ensure_data_loaded():
     global data_loaded
@@ -47,16 +47,15 @@ def ensure_data_loaded():
         data_loaded = True
         print("INFO:     Finished loading data.")
 
-@app.get("/health")
-def health(background_tasks: BackgroundTasks):
-    global health_check  # required to modify health_check
+@app.on_event("startup")
+def startup_event():    
+    # Run load data in a separate thread to avoid blocking startup
+    threading.Thread(target=ensure_data_loaded).start()
 
+@app.get("/health")
+def health():
     if not data_loaded:
-        if not health_check:
-            background_tasks.add_task(ensure_data_loaded)
-            health_check = True
         return {"status": "initializing"}
-    
     return {"status": "ok"}
 
 @app.get("/api/line-chart-1")

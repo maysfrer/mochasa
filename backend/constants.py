@@ -21,6 +21,7 @@ MONTHS = {
     "Diciembre": 12
 }
 
-CURRENT_YEAR = datetime.now().year
+# CURRENT_YEAR = datetime.now().year
+CURRENT_YEAR = 2024 # For testing purposes, set to a fixed year
 
 ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
