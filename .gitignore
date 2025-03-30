@@ -13,3 +13,4 @@ logs
 
 # Editor directories and files
 .vscode/
+.vercel
