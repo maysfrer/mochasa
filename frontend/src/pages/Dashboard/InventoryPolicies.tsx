@@ -12,13 +12,13 @@ const Chart: React.FC = () => {
 
       <div className="grid grid-cols-12 gap- md:gap-6 2xl:gap-7.5">
         <div className="col-span-12">
+          <BaseChartFive />
+        </div>
+        <div className="col-span-12">
           <BaseChartThree />
         </div>
         <div className="col-span-12">
           <BaseChartFour />
-        </div>
-        <div className="col-span-12">
-          <BaseChartFive />
         </div>
         <div className="col-span-12">
           <PieChartThree />

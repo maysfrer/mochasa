@@ -19,9 +19,9 @@ interface TableRowItem {
 
 interface TableProps {
   selectedBodega: string[];
+  selectedSku: string[];
 }
 
-// Classification color mapping
 const getClassificationColor = (classification: string) => {
   switch (classification) {
     case 'A':
@@ -35,7 +35,7 @@ const getClassificationColor = (classification: string) => {
   }
 };
 
-const TableThree: React.FC<TableProps> = ({ selectedBodega }) => {
+const TableThree: React.FC<TableProps> = ({ selectedBodega, selectedSku }) => {
   const [tableData, setTableData] = useState({
     data: [],
     total: 0,
@@ -46,15 +46,17 @@ const TableThree: React.FC<TableProps> = ({ selectedBodega }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Reset the page to 1 whenever selectedBodega changes
     setCurrentPage(1);
-  }, [selectedBodega]); // Dependency on selectedBodega
+  }, [selectedBodega, selectedSku]);
 
   useEffect(() => {
     const fetchTableData = async () => {
       try {
         const query = new URLSearchParams();
         selectedBodega.forEach((bodega) => query.append('bodega', bodega));
+        if (selectedSku.length > 0) {
+          selectedSku.forEach((sku) => query.append('sku', sku));
+        }
 
         const response = await fetch(
           `${
@@ -62,25 +64,22 @@ const TableThree: React.FC<TableProps> = ({ selectedBodega }) => {
           }/api/table-3?${query.toString()}&page=${currentPage}`,
         );
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        if (!response.ok) throw new Error('Network response was not ok');
 
         const data = await response.json();
         setTableData(data);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message); // Safely access error.message
-        } else {
-          setError('An unknown error occurred'); // Fallback for unknown error types
-        }
+        setError(
+          error instanceof Error ? error.message : 'An unknown error occurred',
+        );
       }
     };
 
-    fetchTableData();
-  }, [currentPage, selectedBodega]); // Fetch data whenever selectedBodega or currentPage changes
+    if (selectedBodega.length) {
+      fetchTableData();
+    }
+  }, [currentPage, selectedBodega, selectedSku]);
 
-  // Pagination handlers
   const handleNextPage = () => {
     if (currentPage < tableData.total_pages) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -112,42 +111,22 @@ const TableThree: React.FC<TableProps> = ({ selectedBodega }) => {
             <table className="min-w-full leading-normal">
               <thead>
                 <tr>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    SKU
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Consumo Promedio
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Clasificación
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Bodega
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Costo
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Lead Time
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    H
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Demanda Anual
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Tiempo de Revisión
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Stock de Seguridad
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Nivel Objetivo
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Política
-                  </th>
+                  {[
+                    'SKU',
+                    'Clasificación',
+                    'Consumo Promedio',
+                    'Tiempo de Revisión',
+                    'Lead Time',
+                    'Stock de Seguridad',
+                    'Nivel Objetivo',
+                  ].map((header) => (
+                    <th
+                      key={header}
+                      className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                    >
+                      {header}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -159,64 +138,28 @@ const TableThree: React.FC<TableProps> = ({ selectedBodega }) => {
                       </p>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.mean}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <span
-                        className={`
-                          inline-block px-2 py-1 rounded-full text-xs font-semibold
-                          ${getClassificationColor(item.clase_abc)}
-                        `}
+                        className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${getClassificationColor(
+                          item.clase_abc,
+                        )}`}
                       >
                         {item.clase_abc}
                       </span>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.bodega}
-                      </p>
+                      {item.mean}
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.costo}
-                      </p>
+                      {item.T}
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.lead_time}
-                      </p>
+                      {item.lead_time}
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.h}
-                      </p>
+                      {item.SS}
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.demanda_anual}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.T}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.SS}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.nivel_objetivo}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.politica}
-                      </p>
+                      {item.nivel_objetivo}
                     </td>
                   </tr>
                 ))}

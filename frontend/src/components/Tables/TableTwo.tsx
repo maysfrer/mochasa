@@ -11,6 +11,7 @@ interface TableRowItem {
 
 interface TableProps {
   selectedBodega: string[];
+  selectedSku: string[];
 }
 
 const getClassificationColor = (classification: string) => {
@@ -26,7 +27,7 @@ const getClassificationColor = (classification: string) => {
   }
 };
 
-const TableTwo: React.FC<TableProps> = ({ selectedBodega }) => {
+const TableTwo: React.FC<TableProps> = ({ selectedBodega, selectedSku }) => {
   const [tableData, setTableData] = useState({
     data: [],
     total: 0,
@@ -37,15 +38,17 @@ const TableTwo: React.FC<TableProps> = ({ selectedBodega }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setCurrentPage(1); // Reset the page to 1 whenever selectedBodega changes
-  }, [selectedBodega]);
+    setCurrentPage(1);
+  }, [selectedBodega, selectedSku]);
 
   useEffect(() => {
     const fetchTableData = async () => {
       try {
         const query = new URLSearchParams();
         selectedBodega.forEach((bodega) => query.append('bodega', bodega));
-        query.append('sku', 'AFRECHO DE MALTA | 301');
+        if (selectedSku.length > 0) {
+          selectedSku.forEach((sku) => query.append('sku', sku));
+        }
 
         const response = await fetch(
           `${
@@ -53,34 +56,29 @@ const TableTwo: React.FC<TableProps> = ({ selectedBodega }) => {
           }/api/table-2?${query.toString()}&page=${currentPage}`,
         );
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        if (!response.ok) throw new Error('Network response was not ok');
 
         const data = await response.json();
         setTableData(data);
       } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError('An unknown error occurred');
-        }
+        setError(error instanceof Error ? error.message : 'Unknown error');
       }
     };
 
-    fetchTableData();
-  }, [currentPage, selectedBodega]);
+    if (selectedBodega.length) {
+      fetchTableData();
+    }
+  }, [currentPage, selectedBodega, selectedSku]);
 
-  // Pagination handlers
   const handleNextPage = () => {
     if (currentPage < tableData.total_pages) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage((prevPage) => prevPage - 1);
+      setCurrentPage((prev) => prev - 1);
     }
   };
 

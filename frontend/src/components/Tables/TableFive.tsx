@@ -122,6 +122,27 @@ const TableFive: React.FC<TableProps> = ({ selectedBodega }) => {
                     Consumo promedio
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Consumo Última Semana
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Consumo Último Mes
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Inventario
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    OCs
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Inventario Total
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Cobertura Días
+                  </th>
+                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Solicitar
+                  </th>
+                  {/* <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Clasificación
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -140,32 +161,11 @@ const TableFive: React.FC<TableProps> = ({ selectedBodega }) => {
                     Política
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Inventario
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    OCs
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Consumo Semana
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Consumo Mes
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Inventario Total
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Solicitar
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Demanda Diaria Promedio
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Cobertura Días
-                  </th>
-                  <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Cobertura Meses
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody>
@@ -182,38 +182,13 @@ const TableFive: React.FC<TableProps> = ({ selectedBodega }) => {
                       </p>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <span
-                        className={`
-                          inline-block px-2 py-1 rounded-full text-xs font-semibold
-                          ${getClassificationColor(item.clase_abc)}
-                        `}
-                      >
-                        {item.clase_abc}
-                      </span>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        {item.bodega}
+                        {item.consumo_ult_sem}
                       </p>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        {item.variabilidad}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.lead_time}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.SS}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.politica}
+                        {item.Consumo_ult_mes}
                       </p>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -228,27 +203,7 @@ const TableFive: React.FC<TableProps> = ({ selectedBodega }) => {
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        {item.consumo_ult_sem}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.Consumo_ult_mes}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
                         {item.inventario_total}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.solicitar}
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap">
-                        {item.demanda_diaria_promedio}
                       </p>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
@@ -258,9 +213,54 @@ const TableFive: React.FC<TableProps> = ({ selectedBodega }) => {
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       <p className="text-gray-900 whitespace-no-wrap">
-                        {item.cobertura_meses}
+                        {item.solicitar}
                       </p>
                     </td>
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <span
+                        className={`
+                          inline-block px-2 py-1 rounded-full text-xs font-semibold
+                          ${getClassificationColor(item.clase_abc)}
+                        `}
+                      >
+                        {item.clase_abc}
+                      </span>
+                    </td> */}
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.bodega}
+                      </p>
+                    </td> */}
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.variabilidad}
+                      </p>
+                    </td> */}
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.lead_time}
+                      </p>
+                    </td> */}
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.SS}
+                      </p>
+                    </td>
+                    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.politica}
+                      </p>
+                    </td> */}
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.demanda_diaria_promedio}
+                      </p>
+                    </td> */}
+                    {/* <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                      <p className="text-gray-900 whitespace-no-wrap">
+                        {item.cobertura_meses}
+                      </p>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
