@@ -82,7 +82,7 @@ const BaseChartFour: React.FC = () => {
           options={skuOptions}
           className="mb-3"
           placeholder={
-            selectedSku.length === 0 ? 'All SKUs (default)' : 'Select SKUs'
+            selectedSku.length === 0 ? 'Todos los SKUs' : 'Select SKUs'
           }
           isClearable={isClearable(selectedSku, true)}
           isOptionDisabled={(option) =>

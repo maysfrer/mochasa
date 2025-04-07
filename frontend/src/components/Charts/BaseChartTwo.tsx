@@ -79,7 +79,7 @@ const BaseChartTwo: React.FC = () => {
           options={skuOptions}
           className="mb-3"
           placeholder={
-            selectedSku.length === 0 ? 'All SKUs (default)' : 'Select SKUs'
+            selectedSku.length === 0 ? 'Todos los SKUs' : 'Select SKUs'
           }
           isOptionDisabled={(option) =>
             selectedSku.length >= 4 && !selectedSku.includes(option.value)

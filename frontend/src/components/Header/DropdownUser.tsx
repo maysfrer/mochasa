@@ -17,7 +17,7 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
             Supply Chain
           </span>
-          <span className="block text-xs">supplychain@comunidadunir.net</span>
+          <span className="block text-xs">supplychain@mochasa.com.ec</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
